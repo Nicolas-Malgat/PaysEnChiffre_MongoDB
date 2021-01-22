@@ -8,15 +8,15 @@ import zipfile
 
 class Loader:
 
-    def __init__(self, zip_remote, zip_folder_path, extraction_target = None):
+    def __init__(self, remote, zip_folder_path, extraction_target = None):
         """
             zip_folder_path doit terminer par un separateur ('/' ou '\')
         """
-        self.zip_remote = zip_remote
-        self.zip_folder_path = zip_folder_path
+        self.remote = remote
+        self.folder_path = zip_folder_path
         
         # recuperation du nom du zip
-        self.zip_file = self.zip_folder_path + zip_remote.split('/')[-1]
+        self.file = self.folder_path + remote.split('/')[-1]
 
         self.extraction_target = extraction_target
 
@@ -25,24 +25,24 @@ class Loader:
         Ensure if data are already loaded. Download if missing
         '''
 
-        if path.exists(self.zip_file):
+        if path.exists(self.file):
             print('Le fichier existe déjà')
-            return
+            return self.file.split('/')[-1]
 
         if not Loader.__ask_download_zip():
-            return
+            return self.file.split('/')[-1]
     
         try:
             self._download_data()
         except requests.exceptions.ConnectionError as e:
-            print(e)
-            os.rmdir(self.zip_file)
-            return
+            os.rmdir(self.file)
+            raise e
 
         if self.extraction_target:
             self._extract_data()
 
         print('\nLes fichiers sont correctement téléchargés')
+        return self.file.split('/')[-1]
 
     def __ask_download_zip():
         user_input = "PATRICK"
@@ -72,11 +72,11 @@ class Loader:
         Download the data from internet
         '''
         
-        Loader.__test_folder(self.zip_folder_path)
+        Loader.__test_folder(self.folder_path)
 
         print('Downloading data')
-        with open(self.zip_file, "wb") as f:
-            response = requests.get(self.zip_remote, stream=True)
+        with open(self.file, "wb") as f:
+            response = requests.get(self.remote, stream=True)
             total_length = response.headers.get('content-length')
 
             if total_length is None: # no content length header
@@ -98,7 +98,7 @@ class Loader:
         '''
 
         print('Begin extracting data')
-        with zipfile.ZipFile(self.zip_file, 'r') as zip_ref:
+        with zipfile.ZipFile(self.file, 'r') as zip_ref:
             zip_ref.extractall(self.extraction_target)
         print('Data extract successfully')
 

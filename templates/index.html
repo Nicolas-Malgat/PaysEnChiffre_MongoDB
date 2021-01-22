@@ -6,16 +6,16 @@
     <title>Index</title>
 </head>
 <body>
-    <h1>Je suis un index</h1>
-    <lu>
-        {% for user in online_users %}
+    <h1>Liste des articles en base de données</h1>
+
+    
+    <ul>
+        {% for article in liste %}
             <li>
-                oui
-                "{{user['name']}}"
-                non
+                {{article.name}} {{article['name']}}
             </li>
         {% endfor %}
-    </lu>
+    </ul>
 
     <hr>
 
