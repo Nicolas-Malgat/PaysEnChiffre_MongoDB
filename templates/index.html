@@ -6,27 +6,21 @@
     <title>Index</title>
 </head>
 <body>
+
+    <p>
+        Recharger les pays: <a href="/load_pays">click me</a>
+    </p>
+
     <h1>Liste des articles en base de données</h1>
 
     
-    <ul>
-        {% for article in liste %}
+    <ol>
+        {% for pays in liste %}
             <li>
-                {{article.name}} {{article['name']}}
+                {{pays.Country}}
             </li>
         {% endfor %}
-    </ul>
-
-    <hr>
-
-    <h1>Save file</h1>
-    <form method="POST" action="/save-file" enctype="multipart/form-data">
-        <label for="name">Name</label>
-        <input type="text" name="name" id="name">
-        <input type="file" name="new_file"><br><br>
-        <input type="submit">
-    </form>
-    
+    </ol>
 
 </body>
 </html>

@@ -2,6 +2,7 @@ import csv
 import json
 from flask.json import jsonify
 import pandas as pd
+from pandas.core.base import DataError
 from pandas.core.series import Series
 import re
 
@@ -54,31 +55,8 @@ class PaysEnChiffre:
         """
         docstring
         """
-
-        dict(pd.read_csv(csv_path))
-        
-
-        # def clean_delimiters(delimiters):
-        #     new_delimiters = []
-
-        #     for delim in delimiters:
-        #         delim = re.sub("\(.+\)", '', delim)
-        #         delim = delim.strip().replace(' ', '_').replace('.', '')
-        #         new_delimiters.append(delim)
-
-        #     return new_delimiters
-
-        # with open(csv_path, "r") as csvfile:
-
-        #     delimiters = csvfile.readline().split(',')
-        #     delimiters = clean_delimiters(delimiters)
-
-        #     pays = []
-        #     for row in csv.DictReader(csvfile, delimiters):
-        #         pays.append(row)
-
-        #     with open(target, 'w') as jsonfile:
-        #         jsonfile.write(json.dumps(pays))
+        pays: pd.DataFrame = pd.read_csv(csv_path)
+        pays.to_json(target, orient="records")
 
 if __name__ == "__main__":
     PaysEnChiffre.clean_csv(
@@ -86,7 +64,7 @@ if __name__ == "__main__":
         "../datas/CURATED/pays_en_chiffre.csv"
     )
 
-    # PaysEnChiffre.jsonify_csv(
-    #     "../datas/CURATED/pays_en_chiffre.csv", 
-    #     "../datas/CURATED/pays_en_chiffre.json"
-    # )
+    PaysEnChiffre.jsonify_csv(
+        "../datas/CURATED/pays_en_chiffre.csv", 
+        "../datas/CURATED/pays_en_chiffre.json"
+    )
