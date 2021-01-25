@@ -27,7 +27,7 @@ git clone https://github.com/Nicolas-Malgat/PaysEnChiffre_MongoDB.git
 python main.py
 ```
 - [x] créer une fonction qui retourne le pays qui correspond au critère passé en paramètre. Ce paramètre est le nom du pays.
-Adresse: [/api/countries?country=France](https://127.0.0.1:5000/api/countries?country=France)
+Adresse: [/api/countries?country=France](http://127.0.0.1:5000/api/countries?country=France)
 	
 
 - [x] créer une fonction qui insert un nouveau pays avec des données random (on précise uniquement le pays)
@@ -36,7 +36,7 @@ Adresse: [/api/countries?country=France](https://127.0.0.1:5000/api/countries?co
 	```
 
 - [x] réaliser une fonction pour retourner les pays qui sont regroupés par 4 tranches (à definir) de densité de population
-Adresse: [/api/countries/density](https://127.0.0.1:5000/api/countries/density)
+Adresse: [/api/countries/density](http://127.0.0.1:5000/api/countries/density)
 
 - [x] mettre la date de l'insertion lors d'une création ou mettre à jour une date de modification lors d'un changement de valeur
 	- On peut choisir l'attribut à modifier après "update/" 
