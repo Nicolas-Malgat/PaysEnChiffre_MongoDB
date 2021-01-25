@@ -1,6 +1,8 @@
 import json
 import os
 from logging import debug
+from random import randint
+from types import new_class
 
 from dotenv import load_dotenv
 from flask import Flask, jsonify, render_template, request
@@ -46,7 +48,7 @@ def api_country():
     response = [c for c in db_pays.find({"Country": country})]
     return json.dumps(response, default=str)
 
-@app.route('/api/v1/resources/countries/density', methods=['GET'])
+@app.route('/api/v1/countries/density', methods=['GET'])
 def api_density():
     if 'd1' in request.args:
         d1 = request.args['d1']
@@ -67,10 +69,10 @@ def api_density():
 
     return json.dumps(
         [
-            {'Q1':below_d1}, 
-            {'Q2':between_d1_d2}, 
-            {'Q3':between_d2_d3}, 
-            {'Q4':over_d3}
+            {f"below_{d1}":below_d1}, 
+            {f"between_{d1}_{d2}":between_d1_d2}, 
+            {f"between_{d2}_{d3}":between_d2_d3}, 
+            {f"over_{d3}":over_d3}
         ],
         default=str
     )
@@ -100,3 +102,59 @@ def load_pays():
     return jsonify(
         etat="success"
     )
+
+@app.route("/api/v1/countries/insert", methods=['POST'])
+def api_insert():
+    try:
+        name = request.args['name']
+        population = randint(1000000, 100000000)
+        land_area = randint(100000, 10000000)
+        yearly_change = randint(1,10)
+        new_country = {
+            "Country": name,
+            "Population": population,
+            "Yearly_Change": yearly_change,
+            "Net_Change": population * yearly_change,
+            "Density": population / land_area,
+            "Land_Area": land_area,
+            "Migrants": randint(100000,1000000),
+            "Fert_Rate": randint(1,10),
+            "Med_Age": randint(30,90),
+            "Urban_Pop_%": randint(10,100),
+            "World_Share": randint(1,10)
+        }
+
+        db_pays.insert(
+            new_country
+        )
+
+        return jsonify(
+            etat="success"
+        )
+    except:
+        return jsonify(
+            etat="Failed"
+        )
+
+@app.route("/api/v1/countries/update/<key>", methods=['PUT'])
+def api_update(key):
+    from datetime import datetime
+    try:
+
+        name = request.args.get('name', None)
+        value = request.args.get('value', None)
+
+        updated_result = db_pays.update_one(
+            {"Country":name}, 
+            {'$set': {
+                key: value,
+                "Updated_time":datetime.now().strftime("%H:%M:%S")
+            }}
+        )
+        return jsonify(etat="success")
+    except Exception as e:
+
+        print(e)
+        return jsonify(
+            etat="failed"
+        )
