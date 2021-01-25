@@ -32,7 +32,7 @@ Adresse: [/api/countries?country=France](http://127.0.0.1:5000/api/countries?cou
 
 - [x] créer une fonction qui insert un nouveau pays avec des données random (on précise uniquement le pays)
 	```
-	curl -X POST http://localhost:5000/api/v1/resources/countries/insert?name=patate
+	curl -X POST http://localhost:5000/api/countries/insert?name=patate
 	```
 
 - [x] réaliser une fonction pour retourner les pays qui sont regroupés par 4 tranches (à definir) de densité de population
