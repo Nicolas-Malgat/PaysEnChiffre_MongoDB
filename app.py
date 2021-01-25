@@ -33,12 +33,12 @@ def home_page():
         liste = pays
     )
 
-@app.route('/api/v1/resources/countries/all', methods=['GET'])
+@app.route('/api/countries/all', methods=['GET'])
 def api_all():
     response = [c for c in db_pays.find()]
     return json.dumps(response, default=str)
 
-@app.route('/api/v1/resources/countries', methods=['GET'])
+@app.route('/api/countries', methods=['GET'])
 def api_country():
     if 'country' in request.args:
         country = request.args['country']
@@ -48,7 +48,7 @@ def api_country():
     response = [c for c in db_pays.find({"Country": country})]
     return json.dumps(response, default=str)
 
-@app.route('/api/v1/countries/density', methods=['GET'])
+@app.route('/api/countries/density', methods=['GET'])
 def api_density():
     if 'd1' in request.args:
         d1 = request.args['d1']
@@ -103,7 +103,7 @@ def load_pays():
         etat="success"
     )
 
-@app.route("/api/v1/countries/insert", methods=['POST'])
+@app.route("/api/countries/insert", methods=['POST'])
 def api_insert():
     try:
         name = request.args['name']
@@ -136,7 +136,7 @@ def api_insert():
             etat="Failed"
         )
 
-@app.route("/api/v1/countries/update/<key>", methods=['PUT'])
+@app.route("/api/countries/update/<key>", methods=['PUT'])
 def api_update(key):
     from datetime import datetime
     try:
